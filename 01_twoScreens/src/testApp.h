@@ -43,4 +43,6 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
         ofxProjectorBlend blender;
+        ofImage blendClown;
+        bool bDrawClown;
 };

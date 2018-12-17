@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	blender.setup(PROJECTOR_WIDTH, PROJECTOR_HEIGHT, PROJECTOR_COUNT, PIXEL_OVERLAP);
+	blender.setup(PROJECTOR_WIDTH, PROJECTOR_HEIGHT, PROJECTOR_COUNT, PIXEL_OVERLAP, ofxProjectorBlend_Horizontal, ofxProjectorBlend_NoRotation);
 	blender.gamma[0] = .5;
 	blender.blendPower[0] = 1;
 	blender.luminance[0] = 0;
@@ -11,6 +11,8 @@ void testApp::setup(){
     cout << "display size: " << blender.getDisplayWidth() << " x " << blender.getDisplayHeight() << endl;
     
     ofSetWindowShape(blender.getDisplayWidth(), blender.getDisplayHeight());
+    blendClown.loadImage("blendClown.png");
+    bDrawClown = false;
 }
 
 //--------------------------------------------------------------
@@ -41,6 +43,10 @@ void testApp::draw() {
             ofLine(0, j, blender.getCanvasWidth(), j);
         }
         
+        if (bDrawClown) {
+            blendClown.draw(0, 0);
+        }
+
         //instructions
         ofSetColor(255, 255, 255);
         ofRect(10, 10, 300, 100);
@@ -88,7 +94,10 @@ void testApp::keyReleased(int key){
 	}
 	else if(key == 'P'){
 		blender.blendPower[0] += .05;
-	}
+    }
+    else if (key == 'c') {
+        bDrawClown = !bDrawClown;
+    }
 }
 
 //--------------------------------------------------------------
@@ -125,3 +134,4 @@ void testApp::gotMessage(ofMessage msg){
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+

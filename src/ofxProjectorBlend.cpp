@@ -75,7 +75,15 @@ void ofxProjectorBlend::setup(int resolutionWidth,
 	displayWidth = resolutionWidth*numProjectors;
 	displayHeight = resolutionHeight;
 	
-	fullTexture.allocate(fullTextureWidth, fullTextureHeight, GL_RGB, 4);
+	//	fullTexture.allocate(fullTextureWidth, fullTextureHeight, GL_RGB, 4);
+	ofFbo::Settings fboSettings(gl);
+	fboSettings.width = fullTextureWidth;
+	fboSettings.height = fullTextureHeight;
+	fboSettings.internalformat = GL_RGB;
+	fboSettings.numSamples = 4;
+	fullTexture.allocate(fboSettings);
+
+	blendShader.setRenderer(gl);
     
     blendShader.unload();
     blendShader.setupShaderFromSource(GL_FRAGMENT_SHADER, ofxProjectorBlendFragShader(numProjectors-1));
@@ -92,9 +100,11 @@ void ofxProjectorBlend::setup(int resolutionWidth,
 void ofxProjectorBlend::begin() {
 	
 	fullTexture.begin();
-	
-	ofPushStyle();
-	ofClear(0,0,0,0);
+
+	gl->pushStyle();
+	gl->clear();
+	//	ofPushStyle();
+	//	ofClear(0,0,0,0);
 }
 
 
@@ -130,6 +140,11 @@ void ofxProjectorBlend::setWindowToDisplaySize()
 }
 
 
+void ofxProjectorBlend::setPixelOverLap(float& pixelNum)
+{
+    pixelOverlap = pixelNum;
+}
+
 // --------------------------------------------------
 float ofxProjectorBlend::getCanvasWidth()
 {
@@ -149,7 +164,8 @@ float ofxProjectorBlend::getCanvasHeight()
 void ofxProjectorBlend::end()
 {
 	fullTexture.end();
-	ofPopStyle();
+	gl->popStyle();
+	//	ofPopStyle();
 }
 
 
@@ -173,7 +189,8 @@ void ofxProjectorBlend::updateShaderUniforms()
 
 // --------------------------------------------------
 void ofxProjectorBlend::draw(float x, float y) {
-	ofSetHexColor(0xFFFFFF);
+	//ofSetHexColor(0xFFFFFF);
+	gl->setColor(ofColor::white);
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 	if(showBlend) {

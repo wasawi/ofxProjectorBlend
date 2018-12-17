@@ -19,6 +19,13 @@ class ofxProjectorBlend
   public:
 	ofxProjectorBlend();
 	
+
+	void setRenderer(shared_ptr<ofBaseGLRenderer> GLrenderer) {
+		gl = GLrenderer;
+	}
+
+	shared_ptr<ofBaseGLRenderer> gl;
+
 	/**
 	 * Set resolutionWidth and height to the resolutions of each projector output - if you're portrait, 
 	 * still give it a landscape resolution.
@@ -80,6 +87,7 @@ class ofxProjectorBlend
 	//float luminance2;
 	float threshold;
 	
+    void setPixelOverLap(float& pixelNum);
 protected:
 	
 	vector<int> projectorHeightOffset;
